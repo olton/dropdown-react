@@ -1,0 +1,161 @@
+@transition-short: all .15s ease-in-out;
+
+.rotate(@degrees) {
+    transform+_: rotate(@degrees);
+}
+
+.translateX(@x: 0) {
+    transform+_: translateX(@x);
+}
+
+.translateY(@y: 0) {
+    transform+_: translateY(@y);
+}
+
+.toggle() {
+    position: relative;
+    cursor: pointer;
+    padding-right: 1.5rem;
+    user-select: none;
+
+    &::before {
+        display: block;
+        position: absolute;
+        vertical-align: middle;
+        color: transparent;
+        font-size: 0;
+        content: "";
+        height: 5px;
+        width: 5px;
+        background-color: transparent ;
+        border-left: 1px solid;
+        border-bottom: 1px solid;
+        border-color: var(--textColor);
+        top: 50%;
+        left: 100%;
+        margin-left: -1rem;
+        margin-top: -.1625rem;
+        z-index: 2;
+        transform: rotate(-45deg);
+        transition: @transition-short;
+        transform-origin: center center 1px;
+    }
+}
+
+.dropdown {
+    display: block;
+    float: left;
+    width: auto;
+    background: inherit;
+    position: relative;
+
+    .drop-object {
+        position: absolute;
+        z-index: 1000;
+    }
+
+    .drop-object.place-right {
+        left: auto;
+        right: 0;
+    }
+}
+
+.dropdown {
+    .dropdown {
+        width: 100%;
+
+        .drop-object {
+            top: -4px;
+            left: 100%;
+        }
+
+        .dropdown-toggle {
+            padding-right: 2rem;
+        }
+    }
+}
+
+.dropdown.dropped {
+    & > .dropdown-toggle {
+        &::before {
+            .rotate(135deg);
+            transition: @transition-short;
+        }
+    }
+
+    .dropdown.dropped {
+        & > .dropdown-toggle {
+            &::before {
+                .rotate(45deg);
+                transition: @transition-short;
+            }
+        }
+    }
+}
+
+.dropdown-toggle {
+
+    .toggle();
+
+    &.drop-marker-light, &.marker-light  {
+        &::before {
+            border-color: var(--dropdownDividerColor);
+        }
+    }
+
+    &.no-marker {
+        &::before {
+            display: none;
+        }
+    }
+
+    &.active-toggle, &.active-container {
+        &::before {
+            .rotate(135deg);
+            transition: @transition-short;
+        }
+    }
+
+    &.marker-center {
+        &::before {
+            left: 50%;
+            top: 50%;
+            margin-left: 0;
+            margin-top: 0;
+            .translateX(-50%);
+            .translateY(-50%);
+            .rotate(-45deg);
+        }
+        &.active-toggle, &.active-container {
+            &::before {
+                .translateX(-50%);
+                .translateY(-50%);
+                .rotate(135deg);
+                transition: @transition-short;
+            }
+        }
+    }
+}
+
+.drop-left {
+    right: 100%;
+    top: 0;
+}
+
+.drop-right {
+    left: 100%;
+    top: 0;
+}
+
+.drop-up {
+    top: auto;
+    bottom: 100%;
+}
+
+.drop-object {
+    display: none;
+
+    &.open {
+        display: block!important;
+    }
+}
